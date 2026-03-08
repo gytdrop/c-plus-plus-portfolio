@@ -121,7 +121,7 @@ if (spaces[target] == ' ') return target;}
 if (spaces[target] == ' ') return target;}
     }
 
-    //diffence
+    //difence
     //horizontal = 012 : 345 : 678 ==> (i+1)*3
     for(int first=0;first<7;first+=3){int count=0,second=first+1,third=first+2;
         int difference = 0,sum = (first+1)*3;
