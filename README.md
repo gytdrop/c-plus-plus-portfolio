@@ -35,6 +35,10 @@ The AI in the Tic-Tac-Toe project follows an **Offense > Defense > Random** prio
 1.  **Offense**: Scans for any row, column, or diagonal where it has two pieces and an empty spot to win the game.
 2.  **Defense**: Scans for player threats where the player has two pieces in a line and blocks the third spot.
 3.  **Sum-Difference Math**: To identify the target move, the code calculates the sum of the indices in a winning line (e.g., $0+1+2=3$) and subtracts the occupied indices to find the exact remaining coordinate.
+### Technical Highlights (v2.0)
+* **Strategic AI**: Now prioritizes the center square and corners to secure a stronger board position.
+* **Randomized Starts**: Implemented a coin-flip mechanic to decide the starting player.
+* **Advanced Board Scanning**: Replaced move counters with a full-board state scanner (`chk` function) for more accurate tie detection.
 
 ### Credit Card Validation (Luhn Algorithm)
 The validator implements the following steps to verify card authenticity:
