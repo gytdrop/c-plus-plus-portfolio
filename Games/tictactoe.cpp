@@ -18,7 +18,6 @@ int main(){
     bool gameover = false;int running=0;
     char spaces[9] = {' ',' ',' ',' ',' ',' ',' ',' ',' '};
     char player = choose(),computer = (player=='o')?'x': 'o';int choice = rand()%2==0;
-    char first = (choice==0)?player:computer,second = (first == player)? computer:player;
     cout<<((choice)?"The computer plays First!":"Your Move!")<<'\n';
     if(choice){spaces[rand()%9]=computer;}
     while(!gameover){  
@@ -89,7 +88,7 @@ void drawBoard(char* spaces){
 }
 int foreseen(char* spaces, char computer){
     int place = rand()%9;
-    int randomCorner = rand()%4, corners[4] = {0,26,8}, cornerindex = corners[randomCorner];
+    int randomCorner = rand()%4, corners[4] = {0,2,6,8}, cornerindex = corners[randomCorner];
     if(spaces[cornerindex]==' '){return cornerindex;}
     while(true){if(spaces[place]!=' '){place = (place+7)%9;}
     else{break;}}
@@ -179,3 +178,4 @@ int checkWinner(char* spaces, char move,string display){
         cout<<display;return 1;}}
     return 0;
 }
+
