@@ -9,42 +9,43 @@ void drawBoard(char* spaces);
 void playerMove(char* spaces, char player);
 void computerMove(char *spaces, char computer);
 int tackle(char* spaces, char computer);
+int foreseen(char* spaces, char computer);
 int checkWinner(char* spaces, char move, string display);
 void tie(int running);
-int chk(int running);
+int chk(char* spaces);
 int main(){
     srand(time(0));
     bool gameover = false;int running=0;
     char spaces[9] = {' ',' ',' ',' ',' ',' ',' ',' ',' '};
-    char player = choose(),computer = (player=='o')?'x': 'o';
-    while(!gameover){
-        drawBoard(spaces);
+    char player = choose(),computer = (player=='o')?'x': 'o';int choice = rand()%2==0;
+    char first = (choice==0)?player:computer,second = (first == player)? computer:player;
+    cout<<((choice)?"The computer plays First!":"Your Move!")<<'\n';
+    if(choice){spaces[rand()%9]=computer;}
+    while(!gameover){  
+        if(chk(spaces)){running=-1;break;}drawBoard(spaces);
         playerMove(spaces,player);
         if(checkWinner(spaces,player,"You Won\n")){gameover=true;break;}
-        running++;
-        if(!chk(running)){running=-1;break;}
+        if(chk(spaces)){running=-1;break;}
         else{computerMove(spaces,computer);}
         if(checkWinner(spaces,computer,"You Lost\n")){gameover=true;break;}
     }
     drawBoard(spaces);tie(running);
 /*  o | x | o 
-   ---|---|---
+   ---|---|---cls
     o | x | o
    ---|---|---
     x | 0 | x */
 return 0;
 }
 
-int chk(int running){return (running<5);}
+int chk(char* spaces){for(int i=0;i<9;i++){if(spaces[i]==' '){return 0;}}return 1;}
 
 void computerMove(char* spaces, char computer){
     int place = tackle(spaces,computer);
     if(place == -1){
-    place = rand()%9;
-    while(true){if(spaces[place]!=' '){place = (place+7)%9;}
-    else{break;}}}
-    spaces[place]=computer;
-}
+        place = foreseen(spaces, computer);
+    }
+    spaces[place] = computer;}
 
 void tie(int running){
     cout<<"\n"<<((running == -1)? "TIE" : "Thank you for playing");
@@ -86,9 +87,17 @@ void drawBoard(char* spaces){
         else{cout<<' ';}
     }cout<<endl;}
 }
-
+int foreseen(char* spaces, char computer){
+    int place = rand()%9;
+    int randomCorner = rand()%4, corners[4] = {0,26,8}, cornerindex = corners[randomCorner];
+    if(spaces[cornerindex]==' '){return cornerindex;}
+    while(true){if(spaces[place]!=' '){place = (place+7)%9;}
+    else{break;}}
+    return place;
+}
 int tackle(char* spaces, char computer){
     char player = (computer == 'x')?'o':'x';
+    if(spaces[4]==' '){return 4;}
     //offense
 //horizontal = 012 : 345 : 678 ==> (i+1)*3
     for(int first=0;first<7;first+=3){int count=0,second=first+1,third=first+2;
@@ -111,7 +120,7 @@ if (spaces[target] == ' ') return target;}
 if (spaces[target] == ' ') return target;}
     }
     //cross = 048 : 246 ==> 12
-    for(int first=0;first<3;first+=2){int count=0,second=4-first,third=8-first;
+    for(int first=0;first<3;first+=2){int count=0,second=4,third=8-first;
         int difference = 0,sum = 12;
         if(spaces[first]==computer){difference+=first;count++;} 
         if(spaces[second]==computer){difference+=second;count++;}  
@@ -121,7 +130,7 @@ if (spaces[target] == ' ') return target;}
 if (spaces[target] == ' ') return target;}
     }
 
-    //difence
+    //diffence
     //horizontal = 012 : 345 : 678 ==> (i+1)*3
     for(int first=0;first<7;first+=3){int count=0,second=first+1,third=first+2;
         int difference = 0,sum = (first+1)*3;
@@ -143,7 +152,7 @@ if (spaces[target] == ' ') return target;}
 if (spaces[target] == ' ') return target;}
     }
     //cross = 048 : 246 ==> 12
-    for(int first=0;first<3;first+=2){int count=0,second=4-first,third=8-first;
+    for(int first=0;first<3;first+=2){int count=0,second=4,third=8-first;
         int difference = 0,sum = 12;
         if(spaces[first]== player){difference+=first;count++;}  
         if(spaces[second]== player){difference+=second;count++;}  
@@ -154,6 +163,7 @@ if (spaces[target] == ' ') return target;}
     }
     return -1;
 }
+
 int checkWinner(char* spaces, char move,string display){
     //horizontal = 012 : 345 : 678
     for(int first=0;first<7;first+=3){int count=0,second=first+1,third=first+2;
@@ -164,7 +174,7 @@ int checkWinner(char* spaces, char move,string display){
         if(spaces[first]==move&&spaces[second]==move&&spaces[third]==move){
         cout<<display;return 1;}}
     //cross = 048 : 246
-    for(int first=0;first<3;first+=2){int count=0,second=4-first,third=8-first;
+    for(int first=0;first<3;first+=2){int count=0,second=4,third=8-first;
         if(spaces[first]==move&&spaces[second]==move&&spaces[third]==move){
         cout<<display;return 1;}}
     return 0;
